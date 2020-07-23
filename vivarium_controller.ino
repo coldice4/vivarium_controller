@@ -20,7 +20,7 @@ int status = WL_IDLE_STATUS;
 
 PubSubClient mqtt_client(wifi);
 StaticJsonDocument<200> doc;
-char msg[50];
+char msg[100];
 
 
 void setup() {
@@ -41,6 +41,7 @@ void loop() {
   }
   mqtt_client.loop();
 
+  readSoilSensors();
   doc["alive_time_ms"] = millis();
 
   serializeJson(doc, msg);
@@ -49,5 +50,5 @@ void loop() {
   mqtt_client.publish("vivarium", msg);
 
   int end_time = millis();
-  delay(5000 - (end_time - start_time)); // Wait for 3 seconds to post again
+  delay(5000 - (end_time - start_time)); // Do a loop every 5 seconds
 }

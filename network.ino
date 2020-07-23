@@ -24,5 +24,6 @@ void reconnect() {
       Serial.println(" retrying in 5 seconds");
       delay(5000);
     }
+    Serial.println();
   }
 }
