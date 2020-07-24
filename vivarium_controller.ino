@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
+#include "time.h"
 
 const char* ssid     = "HomeNet"; // Your WiFi ssid
 const char* password = "Sahara45"; //Your Wifi password
@@ -22,6 +23,9 @@ PubSubClient mqtt_client(wifi);
 StaticJsonDocument<200> doc;
 char msg[100];
 
+const char* ntpServer = "pool.ntp.org";
+const int gmtOffset_sec = 0;
+const int daylightOffset_sec = 0;
 
 void setup() {
   // initialize serial communications and wait for port to open:
@@ -30,7 +34,10 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
   setup_wifi();
+  populateDeviceId();
   mqtt_client.setServer(mqtt_broker, mqtt_port);
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  printLocalTime();
 }
 
 // Loop function runs continuously
